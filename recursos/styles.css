@@ -1,0 +1,176 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+    background: none;
+}
+
+nav{
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FF5C8A;
+    position: relative;
+    height: 70px;
+}
+
+.logo{
+    color: #fff;
+  
+}
+
+nav .logo h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; /* ajustar conforme necessário: 400, 600, 700, etc. */
+    margin: 0;
+}
+
+nav ul{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+nav ul li{
+    list-style-type: none;
+}
+
+nav ul li a{
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.menu-icon{
+    display: none;
+}
+
+.menu-icon i{
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+@media (max-width:600px) {
+    nav ul{
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        text-align: center;
+        background: #FF5C8A;
+        gap: 0;
+        overflow: hidden;
+    }
+    nav ul li{
+        padding: 20px;
+        padding-top: 0;
+    }
+    .menu-icon{
+        display: block;
+    }
+    #menuList{
+        transition: all 0.5s;
+    }
+}
+
+/* imagem responsiva até tamanho de celular; em telas maiores mantém tamanho fixo */
+.promotion {
+    position: relative;
+    overflow: visible;
+    background-image: url('../recursos/cnt-img1.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;            /* escala pela largura, maior e elegante */
+    height: clamp(260px, 40vh, 560px);     /* mais alta: responsiva e limitada */
+    max-height: 560px;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 12px 0;                        /* reduzido para mostrar mais da imagem */
+}
+
+/* garantir pseudo-elementos ocultos */
+.promotion::before,
+.promotion::after {
+    display: none !important;
+}
+
+/* em telas de tablet/desktop manter tamanho maior fixo */
+@media (min-width: 601px) {
+    .promotion {
+        height: 420px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .promotion {
+        height: 560px;
+    }
+}
+
+/* mantém o texto em cima da imagem */
+.promo-text {
+    position: relative;
+    z-index: 2;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: #ffffff;
+    padding: 18px 36px;
+    border-radius: 14px;
+    max-width: 90%;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    line-height: 1.05;
+    transition: transform 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
+
+    /* glassmorphism + soft highlight */
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 12px 100px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+
+    /* subtle depth and readability */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+}
+
+/* efeito ao passar o mouse */
+.promo-text:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 100px rgba(0,0,0,0.55);
+    opacity: 0.98;
+}
+
+/*  caso queira um subtítulo menor */
+.promo-text small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.45em;
+    margin-top: 8px;
+    opacity: 0.95;
+    letter-spacing: 0.6px;
+}
+
+/* responsividade extra para telas pequenas */
+@media (max-width:420px) {
+    .promo-text {
+        padding: 14px 20px;
+        font-size: clamp(1.2rem, 5.5vw, 1.8rem);
+        border-radius: 10px;
+    }
+}
+

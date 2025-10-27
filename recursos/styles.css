@@ -49,7 +49,11 @@ nav ul li a{
 }
 
 .menu-icon{
-    display: none;
+    display: none; /* oculto por padrão em desktop */
+    width: 44px;
+    height: 44px;
+    transition: transform 0.3s ease;
+    transform-origin: center center; /* garante rotação centralizada */
 }
 
 .menu-icon i{
@@ -58,7 +62,86 @@ nav ul li a{
     cursor: pointer;
 }
 
-@media (max-width:600px) {
+.search-icon {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.search-icon i {
+    color: #fff;
+    font-size: 20px;
+}
+
+/* Search UI */
+.search-bar {
+    position: absolute;
+    top: 70px;
+    right: 18px;
+    width: 340px;
+    max-width: calc(100% - 36px);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    z-index: 6;
+    transform-origin: top right;
+    transform: scaleY(0);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .16s ease, opacity .16s ease;
+}
+.search-bar.open {
+    transform: scaleY(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+.search-bar input[type="search"]{
+    flex: 1;
+    border: 0;
+    outline: none;
+    font-size: 14px;
+    padding: 8px;
+    background: transparent;
+    color: #222;
+}
+.search-bar button{
+    border: 0;
+    background: #FF5C8A;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    max-height: 280px;
+    overflow: auto;
+    z-index: 7;
+    display: none;
+}
+.search-results.open { display: block; }
+.search-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+    font-size: 14px;
+    color: #222;
+}
+.search-item:last-child { border-bottom: 0; }
+.search-item:hover, .search-item:focus { background: #faf7fb; outline: none; }
+
+/* mobile adjustments */
+@media (max-width:700px) {
     nav ul{
         position: absolute;
         top: 70px;
@@ -69,28 +152,85 @@ nav ul li a{
         background: #FF5C8A;
         gap: 0;
         overflow: hidden;
+        z-index: 3;
     }
     nav ul li{
         padding: 20px;
         padding-top: 0;
     }
+
+    /* ícones à direita e alinhados verticalmente no mobile */
     .menu-icon{
-        display: block;
+        display: flex; /* mostrar e usar flex apenas no mobile */
+        position: absolute;
+        right: 19px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5; /* menu acima do search */
+        transition: transform 0.3s ease;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        transform-origin: center center;
     }
+
+    .search-icon {
+        display: block;
+        position: absolute;
+        /* coloca o search à esquerda do menu: right maior que o do menu */
+        right: calc(19px + 44px + 12px); /* 12px = espaçamento desejado entre ícones */
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 4;
+        margin: 0;
+        cursor: pointer;
+    }
+
     #menuList{
         transition: all 0.5s;
     }
+
+    /* Colapsa o menu por padrão e anima com max-height */
+    nav ul {
+        max-height: 0;
+        transition: max-height 0.35s ease, padding 0.35s ease;
+        pointer-events: none;
+    }
+
+    /* Quando a classe open estiver presente, expande o menu */
+    nav ul.open {
+        max-height: 600px; /* ajuste conforme número de itens */
+        pointer-events: auto;
+    }
+
+    /* opcional: suaviza o aparecimento dos itens */
+    nav ul li {
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    nav ul.open li {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .search-bar {
+        right: 12px;
+        left: 12px;
+        width: auto;
+    }
 }
 
-/* imagem responsiva até tamanho de celular; em telas maiores mantém tamanho fixo */
 .promotion {
     position: relative;
-    overflow: visible;
-    background-image: url('../recursos/cnt-img1.png');
+    overflow: hidden; /* ajustado para esconder o blur escalado */
+    /* removida a background-image daqui: agora a imagem fica em ::before */
     background-repeat: no-repeat;
     background-position: top center;
-    background-size: 100% auto;            /* escala pela largura, maior e elegante */
-    height: clamp(260px, 40vh, 560px);     /* mais alta: responsiva e limitada */
+    background-size: 100% auto;
+    height: clamp(260px, 60vh, 560px);
     max-height: 560px;
     min-height: 220px;
     display: flex;
@@ -98,38 +238,45 @@ nav ul li a{
     justify-content: center;
     color: white;
     text-align: center;
-    padding: 12px 0;                        /* reduzido para mostrar mais da imagem */
+    padding: 12px 0;
+    /* z-index removido para evitar conflito com pseudo-elements */
 }
 
-/* garantir pseudo-elementos ocultos */
-.promotion::before,
+/* imagem de fundo em ::before para poder aplicar blur */
+.promotion::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../recursos/image.png');
+    background-repeat: repeat;
+    background-position: top center;
+    background-size: 520px ; /* mantém a escala pela largura como antes */
+    filter: blur(0.34px);          /* ajuste a intensidade do blur aqui */
+    transform: scale(1.04);     /* escala suave para evitar bordas transparentes após o blur */
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* overlay escuro permanente (já presente, mantém a legibilidade) */
 .promotion::after {
-    display: none !important;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38); /* ajuste opacidade para mais/menos escuridão */
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* em telas de tablet/desktop manter tamanho maior fixo */
-@media (min-width: 601px) {
-    .promotion {
-        height: 420px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .promotion {
-        height: 560px;
-    }
-}
-
-/* mantém o texto em cima da imagem */
+/* mantém o texto acima de tudo */
 .promo-text {
     position: relative;
     z-index: 2;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700; /* exemplo: 300 light, 400 normal, 600 semibold, 700 bold, 800 extra-bold */
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
     color: #ffffff;
-    padding: 18px 36px;
-    border-radius: 14px;
+    padding: 100px 20px;
+    border-radius: 8px;
     max-width: 90%;
     text-align: center;
     text-transform: uppercase;
@@ -139,10 +286,10 @@ nav ul li a{
 
     /* glassmorphism + soft highlight */
     background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.12);
     box-shadow: 0 12px 100px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
 
     /* subtle depth and readability */
     text-shadow: 0 2px 10px rgba(0,0,0,0.55);
@@ -172,5 +319,19 @@ nav ul li a{
         font-size: clamp(1.2rem, 5.5vw, 1.8rem);
         border-radius: 10px;
     }
+}
+
+.container {
+   background: none;
+   padding: 15px;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   width: 100%;
+   font-size: 14px;
+   padding: 15px;
+   border-radius: 10px;
+   gap: 40px;
+   background-color: #ff5c8a79;
+   color: #3a3131;
 }
 

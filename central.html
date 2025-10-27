@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+
 </head>
 
 <body>
@@ -29,6 +30,9 @@
                 <li><a href="">Product</a></li>
                 <li><a href="">Contact</a></li>
             </ul>
+            <div class="search-icon">
+                <i class="fa-solid fa-search"></i>
+            </div>
             <div class="menu-icon">
                 <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
             </div>
@@ -36,29 +40,51 @@
     </header>
 
 
+    <div class="search-icon" aria-hidden="true">
+        <!-- mantenha seu ícone atual aqui (ex.: <i class="fa fa-search"></i>) -->
+    </div>
+
+
+    <form id="siteSearch" class="search-bar" role="search" aria-label="Pesquisar no site" onsubmit="return false;">
+        <input id="searchInput" type="search" placeholder="Pesquisar..." aria-label="Pesquisar" />
+        <button id="searchSubmit" type="button" aria-label="Buscar">Buscar</button>
+        <div id="searchResults" class="search-results" role="listbox" aria-hidden="true"></div>
+    </form>
+
+
+
     <div class="promotion">
         <div class="promo-text">
-            Vista-se de elegância.
+            Vista-se de elegância. <n>
+                <small>Descubra a nova coleção primavera-verão 2025</small>
+        </div>
+    </div>
+    <div class="container">
+        <div class="0ap1">
+            <strong>
+                <p>PAGUE PARCELADO EM ATÉ 6X</p>
+            </strong>
+            <p>Sem juros no cartão de crédito</p>
+        </div>
+        <div class="0ap2">
+            <strong>
+                <p>FRETE GRÁTIS</p> 
+            </strong>
+            <p>O Frete é grátis para qualquer produto.</p>
+        </div>
+        <div class="0ap3">
+            <strong>
+                <p>Compra 100% Segura</p>
+            </strong>
+            <p>Seus dados 100% protegidos.</p>
         </div>
     </div>
 
 
 
-    <script>
-        let menuList = document.getElementById("menuList")
-        menuList.style.maxHeight = "0px";
-
-        function toggleMenu() {
-            if (menuList.style.maxHeight == "0px") {
-                menuList.style.maxHeight = "300px";
-            }
-            else {
-                menuList.style.maxHeight = "0px";
-            }
-        }
-
-    </script>
-    <script src="https://kit.fontawesome.com/f8e1a90484.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity=""
+        crossorigin="anonymous">
+    <script src="recursos/script.js"></script>
 </body>
 
 </html>
